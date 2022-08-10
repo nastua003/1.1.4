@@ -39,8 +39,10 @@ public class UserDaoJDBCImpl implements UserDao {
         try (PreparedStatement statement = connection.prepareStatement(SQL_CREATE)) {
             statement.executeUpdate();
             connection.commit();
-            connection.rollback();
         } catch (SQLException e) {
+            try {
+            connection.rollback();
+            }catch (SQLException s){}
             e.printStackTrace();
         }
     }
@@ -49,8 +51,10 @@ public class UserDaoJDBCImpl implements UserDao {
             try (PreparedStatement statement = connection.prepareStatement(DELETE_IF_EXIST)) {
                 statement.executeUpdate();
                 connection.commit();
-                connection.rollback();
             } catch (SQLException e) {
+                try {
+                    connection.rollback();
+                }catch (SQLException s){}
                 e.printStackTrace();
             }
         }
@@ -63,8 +67,10 @@ public class UserDaoJDBCImpl implements UserDao {
             statement.setByte(3, age);
             statement.executeUpdate();
             connection.commit();
-            connection.rollback();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            }catch (SQLException s){}
             e.printStackTrace();
         }
     }
@@ -74,8 +80,10 @@ public class UserDaoJDBCImpl implements UserDao {
             statement.setLong(1, id);
             statement.executeUpdate();
             connection.commit();
-            connection.rollback();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            }catch (SQLException s){}
             e.printStackTrace();
         }
     }
@@ -85,7 +93,7 @@ public class UserDaoJDBCImpl implements UserDao {
         try (PreparedStatement statement = connection.prepareStatement(GET_ALL_USERS)) {
             ResultSet result = statement.executeQuery();
             connection.commit();
-            connection.rollback();
+
             while (result.next()) {
                 String name = result.getString("NAME");
                 String lastName = result.getString("LASTNAME");
@@ -94,6 +102,9 @@ public class UserDaoJDBCImpl implements UserDao {
                 users.add(user);
             }
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            }catch (SQLException s){}
             e.printStackTrace();
         }
         return users;
@@ -104,8 +115,10 @@ public class UserDaoJDBCImpl implements UserDao {
         try (PreparedStatement statement = connection.prepareStatement(DELETE_ALL_USERS)) {
             statement.executeUpdate();
             connection.commit();
-            connection.rollback();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            }catch (SQLException s){}
             e.printStackTrace();
         }
     }
