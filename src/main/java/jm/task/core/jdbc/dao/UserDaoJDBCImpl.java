@@ -38,6 +38,8 @@ public class UserDaoJDBCImpl implements UserDao {
     public void createUsersTable() {
         try (PreparedStatement statement = connection.prepareStatement(SQL_CREATE)) {
             statement.executeUpdate();
+            connection.commit();
+            connection.rollback();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -46,6 +48,8 @@ public class UserDaoJDBCImpl implements UserDao {
         public void dropUsersTable() {
             try (PreparedStatement statement = connection.prepareStatement(DELETE_IF_EXIST)) {
                 statement.executeUpdate();
+                connection.commit();
+                connection.rollback();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -58,7 +62,8 @@ public class UserDaoJDBCImpl implements UserDao {
             statement.setString(2, lastName);
             statement.setByte(3, age);
             statement.executeUpdate();
-            System.out.println(name + "добавлен в базу данных");
+            connection.commit();
+            connection.rollback();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -68,6 +73,8 @@ public class UserDaoJDBCImpl implements UserDao {
         try (PreparedStatement statement = connection.prepareStatement(DELETE_USER)) {
             statement.setLong(1, id);
             statement.executeUpdate();
+            connection.commit();
+            connection.rollback();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -77,6 +84,8 @@ public class UserDaoJDBCImpl implements UserDao {
         List<User> users = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(GET_ALL_USERS)) {
             ResultSet result = statement.executeQuery();
+            connection.commit();
+            connection.rollback();
             while (result.next()) {
                 String name = result.getString("NAME");
                 String lastName = result.getString("LASTNAME");
@@ -94,6 +103,8 @@ public class UserDaoJDBCImpl implements UserDao {
     public void cleanUsersTable() {
         try (PreparedStatement statement = connection.prepareStatement(DELETE_ALL_USERS)) {
             statement.executeUpdate();
+            connection.commit();
+            connection.rollback();
         } catch (SQLException e) {
             e.printStackTrace();
         }
