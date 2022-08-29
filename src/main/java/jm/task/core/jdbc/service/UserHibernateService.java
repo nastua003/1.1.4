@@ -4,7 +4,7 @@ import jm.task.core.jdbc.model.User;
 
 import java.util.List;
 
-public interface UserService  {
+public interface UserHibernateService {
     void createUsersTable();
 
     void dropUsersTable();
